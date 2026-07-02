@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>音乐风格推荐</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Microsoft YaHei', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
+        .container { background: white; border-radius: 20px; padding: 40px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); max-width: 600px; width: 100%; text-align: center; }
+        h1 { color: #333; margin-bottom: 10px; font-size: 28px; }
+        .subtitle { color: #666; margin-bottom: 30px; font-size: 14px; }
+        .music-icon { font-size: 60px; margin-bottom: 20px; }
+        .form-group { margin-bottom: 30px; }
+        label { display: block; margin-bottom: 15px; color: #555; font-size: 16px; font-weight: 500; }
+        .style-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 30px; }
+        .style-card { padding: 18px 10px; background: #f8f9fa; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; border: 2px solid transparent; }
+        .style-card:hover { background: #e8eaf6; border-color: #667eea; transform: translateY(-3px); }
+        .style-card.selected { background: #e8eaf6; border-color: #667eea; }
+        .style-emoji { font-size: 32px; margin-bottom: 8px; }
+        .style-name { font-size: 14px; color: #333; font-weight: 500; }
+        input[type="hidden"] { display: none; }
+        button { width: 100%; padding: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 10px; font-size: 18px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
+        button:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(102,126,234,0.4); }
+        button:active { transform: translateY(0); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="music-icon">🎵</div>
+        <h1>音乐风格推荐</h1>
+        <p class="subtitle">选择你喜欢的音乐风格，发现更多好音乐</p>
+        
+        <form action="/recommend" method="post">
+            <div class="form-group">
+                <label>🎭 选择音乐风格</label>
+                <div class="style-options">
+                    {% for mood in moods %}
+                    <div class="style-card" onclick="selectStyle('{{ mood }}')" id="style-{{ mood }}">
+                        <div class="style-emoji">{{ mood_emojis[mood] }}</div>
+                        <div class="style-name">{{ mood }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <input type="hidden" name="mood" id="selected-style" required>
+            </div>
+            
+            <button type="submit">🎧 开始推荐</button>
+        </form>
+    </div>
+
+    <script>
+        function selectStyle(style) {
+            document.querySelectorAll('.style-card').forEach(card => card.classList.remove('selected'));
+            document.getElementById('style-' + style).classList.add('selected');
+            document.getElementById('selected-style').value = style;
+        }
+    </script>
+</body>
+</html>
